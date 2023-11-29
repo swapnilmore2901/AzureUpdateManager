@@ -1,0 +1,52 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "galleries_galleryimage_name": {
+            "defaultValue": "galleryimage",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Compute/galleries",
+            "apiVersion": "2022-03-03",
+            "name": "[parameters('galleries_galleryimage_name')]",
+            "location": "eastus",
+            "properties": {
+                "identifier": {}
+            }
+        },
+        {
+            "type": "Microsoft.Compute/galleries/images",
+            "apiVersion": "2022-03-03",
+            "name": "[concat(parameters('galleries_galleryimage_name'), '/img1')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/galleries', parameters('galleries_galleryimage_name'))]"
+            ],
+            "properties": {
+                "hyperVGeneration": "V1",
+                "architecture": "x64",
+                "osType": "Windows",
+                "osState": "Generalized",
+                "identifier": {
+                    "publisher": "windows",
+                    "offer": "offer1",
+                    "sku": "skuimge1"
+                },
+                "recommended": {
+                    "vCPUs": {
+                        "min": 1,
+                        "max": 16
+                    },
+                    "memory": {
+                        "min": 1,
+                        "max": 32
+                    }
+                }
+            }
+        }
+    ]
+}
