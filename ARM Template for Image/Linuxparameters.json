@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "uksouth"
+        },
+        "galleryName": {
+            "value": "galleryimage"
+        },
+        "imageDefinitionName": {
+            "value": "LinuxImg"
+        },
+        "osType": {
+            "value": "Linux"
+        },
+        "osState": {
+            "value": "Generalized"
+        },
+        "publisher": {
+            "value": "Linux"
+        },
+        "offer": {
+            "value": "offer2"
+        },
+        "sku": {
+            "value": "skuimage2"
+        },
+        "minRecommendedvCPUs": {
+            "value": 1
+        },
+        "maxRecommendedvCPUs": {
+            "value": 16
+        },
+        "minRecommendedMemory": {
+            "value": 1
+        },
+        "maxRecommendedMemory": {
+            "value": 32
+        },
+        "hyperVGeneration": {
+            "value": "V1"
+        },
+        "architecture": {
+            "value": "x64"
+        }
+    }
+}
