@@ -1,1 +1,1 @@
-sudo mkdir /test
+mkdir /tesst1
