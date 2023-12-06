@@ -1,1 +1,3 @@
-sudo mkdir /tesst1
+sudo apt-get update 
+sudo apt-get upgrade -y 
+sudo apt-get install -y ansible
