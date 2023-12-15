@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "maintenanceConfigName": {
+            "value": "azureman"
+        },
+        "maintenanceConfigLocation": {
+            "value": "uksouth"
+        },
+        "maintenanceSchedule": {
+            "value": {
+                "startDateTime": "2023-12-11 00:00",
+                "duration": "03:55",
+                "timeZone": "India Standard Time",
+                "expirationDateTime": null,
+                "recurEvery": "1Day"
+            }
+        },
+        "maintenanceScope": {
+            "value": "InGuestPatch"
+        }
+    }
+}

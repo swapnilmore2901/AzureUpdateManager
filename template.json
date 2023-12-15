@@ -1,0 +1,150 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "maintenanceConfigName": {
+            "type": "string",
+            "metadata": {
+                "description": "This is name of the maintenance config being created."
+            }
+        },
+        "maintenanceConfigLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "This is location of the maintenance config being created."
+            }
+        },
+        "maintenanceSchedule": {
+            "type": "object",
+            "metadata": {
+                "description": "This is schedule information associated with the Maintenance configuration."
+            }
+        },
+        "maintenanceScope": {
+            "type": "string",
+            "metadata": {
+                "description": "Gets or sets maintenanceScope of the configuration."
+            }
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2023-04-01",
+            "type": "Microsoft.Maintenance/maintenanceConfigurations",
+            "name": "[parameters('maintenanceConfigName')]",
+            "location": "[parameters('maintenanceConfigLocation')]",
+            "tags": {},
+            "properties": {
+                "maintenanceScope": "InGuestPatch",
+                "installPatches": {
+                    "linuxParameters": {
+                        "classificationsToInclude": [
+                            "Critical",
+                            "Security"
+                        ],
+                        "packageNameMasksToExclude": null,
+                        "packageNameMasksToInclude": null
+                    },
+                    "windowsParameters": {
+                        "classificationsToInclude": [
+                            "Critical",
+                            "Security",
+                            "Updates"
+                        ],
+                        "kbNumbersToExclude": null,
+                        "kbNumbersToInclude": null
+                    },
+                    "rebootSetting": "RebootIfRequired"
+                },
+                "extensionProperties": {
+                    "InGuestPatchMode": "User"
+                },
+                "maintenanceWindow": {
+                    "startDateTime": "2023-12-11 00:00",
+                    "duration": "03:55",
+                    "timeZone": "India Standard Time",
+                    "expirationDateTime": null,
+                    "recurEvery": "1Day"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-08-01",
+            "name": "[uniqueString('Scope_cbf8b966-9488-4fc7-a133-b65c3b0285a8_azureman')]",
+            "subscriptionId": "cbf8b966-9488-4fc7-a133-b65c3b0285a8",
+            "location": "uksouth",
+            "dependsOn": [
+                "[concat('Microsoft.Maintenance/maintenanceConfigurations/', parameters('maintenanceConfigName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "http://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [
+                        {
+                            "apiVersion": "2023-04-01",
+                            "type": "Microsoft.Maintenance/configurationAssignments",
+                            "name": "azuremanDynamicAssignment1",
+                            "properties": {
+                                "maintenanceConfigurationId": "/subscriptions/cbf8b966-9488-4fc7-a133-b65c3b0285a8/resourceGroups/updatemanafer/providers/Microsoft.Maintenance/maintenanceConfigurations/azureman",
+                                "filter": {
+                                    "resourceTypes": [
+                                        "microsoft.compute/virtualmachines",
+                                        "microsoft.hybridcompute/machines"
+                                    ],
+                                    "resourceGroups": [],
+                                    "osTypes": [
+                                        "Linux",
+                                        "Windows"
+                                    ],
+                                    "locations": [],
+                                    "tagSettings": {
+                                        "filterOperator": "All",
+                                        "tags": {
+                                            "Service Plan": [
+                                                "Gold"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "apiVersion": "2023-04-01",
+                            "type": "Microsoft.Maintenance/configurationAssignments",
+                            "name": "azuremanDynamicAssignment2",
+                            "properties": {
+                                "maintenanceConfigurationId": "/subscriptions/cbf8b966-9488-4fc7-a133-b65c3b0285a8/resourceGroups/updatemanafer/providers/Microsoft.Maintenance/maintenanceConfigurations/azureman",
+                                "filter": {
+                                    "resourceTypes": [
+                                        "microsoft.compute/virtualmachines",
+                                        "microsoft.hybridcompute/machines"
+                                    ],
+                                    "resourceGroups": [],
+                                    "osTypes": [
+                                        "Linux",
+                                        "Windows"
+                                    ],
+                                    "locations": [],
+                                    "tagSettings": {
+                                        "filterOperator": "All",
+                                        "tags": {
+                                            "Service Plan": [
+                                                "Silver"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                "parameters": {}
+            },
+            "tags": {}
+        }
+    ]
+}
