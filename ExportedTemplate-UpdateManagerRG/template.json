@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "maintenanceconfigurations_updatemanagerwin1_name": {
+            "defaultValue": "updatemanagerwin1",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.maintenance/maintenanceconfigurations",
+            "apiVersion": "2023-09-01-preview",
+            "name": "[parameters('maintenanceconfigurations_updatemanagerwin1_name')]",
+            "location": "eastus",
+            "properties": {
+                "extensionProperties": {
+                    "inGuestPatchMode": "User"
+                },
+                "maintenanceScope": "InGuestPatch",
+                "maintenanceWindow": {
+                    "startDateTime": "2023-12-19 01:00",
+                    "duration": "03:55",
+                    "timeZone": "India Standard Time",
+                    "recurEvery": "1Month Second Tuesday Offset6"
+                },
+                "visibility": "Custom",
+                "installPatches": {
+                    "rebootSetting": "NeverReboot",
+                    "windowsParameters": {
+                        "classificationsToInclude": [
+                            "Critical",
+                            "Security"
+                        ]
+                    },
+                    "linuxParameters": {
+                        "classificationsToInclude": [
+                            "Critical",
+                            "Security"
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
